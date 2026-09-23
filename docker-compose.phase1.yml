@@ -1,0 +1,88 @@
+# ==============================================================================
+# IMF-DOS Phase 1 Deployment — Single VPS Production Stack
+# Target Domain: imammission.org
+# Services: App (Next.js Standalone), PostgreSQL 16, Redis 7, Volume Storage
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: imf-dos-app
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://${DB_USER:-imf_admin}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-imf_production}?schema=public
+      - REDIS_URL=redis://redis:6379
+      - STORAGE_DRIVER=local
+      - STORAGE_LOCAL_DIR=/app/uploads
+      - BACKUP_STORAGE_DIR=/app/backups
+      - JWT_SECRET=${JWT_SECRET}
+      - ENCRYPTION_KEY_PII=${ENCRYPTION_KEY_PII}
+      - QR_HMAC_SECRET=${QR_HMAC_SECRET}
+      - RECEIPT_SIGNING_SECRET=${RECEIPT_SIGNING_SECRET}
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - NEXT_PUBLIC_SITE_URL=https://imammission.org
+      - NEXT_PUBLIC_APP_URL=https://imammission.org
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - uploads_data:/app/uploads
+      - backups_data:/app/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: imf-dos-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-imf_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-imf_production}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-imf_admin} -d ${DB_NAME:-imf_production}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: imf-dos-redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  redis_data:
+  uploads_data:
+  backups_data:

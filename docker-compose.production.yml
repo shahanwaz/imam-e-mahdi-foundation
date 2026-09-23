@@ -1,0 +1,153 @@
+# ==============================================================================
+# IMAM E MAHDI FOUNDATION DIGITAL OPERATING SYSTEM (IMF-DOS)
+# Complete Production Docker Stack: NGINX + App + PostgreSQL + Redis
+# Target Domain: imammission.org (and subdomains: www, api, admin)
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Reverse Proxy & Ingress Gateway (NGINX)
+  # ----------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: imf-prod-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/nginx.production.conf:/etc/nginx/conf.d/default.conf:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - imf_prod_network
+    healthcheck:
+      test: ["CMD-SHELL", "nginx -t || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ----------------------------------------------------------------------------
+  # 2. Main Standalone Application (Next.js 16 + Node.js 22 Runner)
+  # ----------------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: imf-prod-app
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://${DB_USER:-imf_admin}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-imf_production}?schema=public
+      - REDIS_URL=redis://redis:6379
+      - STORAGE_DRIVER=${STORAGE_DRIVER:-local}
+      - STORAGE_LOCAL_DIR=/app/uploads
+      - BACKUP_STORAGE_DIR=/app/backups
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION_COOKIE_NAME=${SESSION_COOKIE_NAME:-imf_dos_session}
+      - ENCRYPTION_KEY_PII=${ENCRYPTION_KEY_PII}
+      - QR_HMAC_SECRET=${QR_HMAC_SECRET}
+      - RECEIPT_SIGNING_SECRET=${RECEIPT_SIGNING_SECRET}
+      - BACKUP_ENCRYPTION_KEY=${BACKUP_ENCRYPTION_KEY}
+      - USE_MOCK_PAYMENTS=${USE_MOCK_PAYMENTS:-false}
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}
+      - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - WHATSAPP_API_KEY=${WHATSAPP_API_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL:-contact@imammission.org}
+      - NEXT_PUBLIC_SITE_URL=https://imammission.org
+      - NEXT_PUBLIC_APP_URL=https://imammission.org
+    volumes:
+      - uploads_data:/app/uploads
+      - backups_data:/app/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - imf_prod_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # ----------------------------------------------------------------------------
+  # 3. Relational ACID Database & PII Vault (PostgreSQL 16)
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: imf-prod-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-imf_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-imf_production}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - imf_prod_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-imf_admin} -d ${DB_NAME:-imf_production}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 4. In-Memory Cache, Rate Limiting & Queue Broker (Redis 7)
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: imf-prod-redis
+    restart: always
+    command: redis-server --appendonly yes --maxmemory 1gb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - imf_prod_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# ------------------------------------------------------------------------------
+# Persistent Production Volumes
+# ------------------------------------------------------------------------------
+volumes:
+  pgdata:
+    name: imf_prod_pgdata
+  redis_data:
+    name: imf_prod_redis_data
+  uploads_data:
+    name: imf_prod_uploads_data
+  backups_data:
+    name: imf_prod_backups_data
+  certbot_conf:
+    name: imf_prod_certbot_conf
+  certbot_www:
+    name: imf_prod_certbot_www
+
+# ------------------------------------------------------------------------------
+# Isolated Production Network
+# ------------------------------------------------------------------------------
+networks:
+  imf_prod_network:
+    name: imf_prod_network
+    driver: bridge

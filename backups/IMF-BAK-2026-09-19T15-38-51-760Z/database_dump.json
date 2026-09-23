@@ -1,0 +1,20 @@
+{
+  "journalVouchers": [
+    {
+      "id": "jv_bad",
+      "voucherNumber": "JV-UNBALANCED",
+      "entries": [
+        {
+          "id": "1",
+          "type": "DEBIT",
+          "amount": 1000
+        },
+        {
+          "id": "2",
+          "type": "CREDIT",
+          "amount": 900
+        }
+      ]
+    }
+  ]
+}

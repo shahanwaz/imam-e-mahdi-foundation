@@ -1,0 +1,36 @@
+# ==============================================================================
+# Systemd Service Unit for IMF-DOS Standalone Node.js Runner
+# File location on VPS: /etc/systemd/system/imf-dos.service
+# ==============================================================================
+
+[Unit]
+Description=Imam E Mahdi Foundation Digital Operating System (IMF-DOS)
+Documentation=https://imammission.org
+After=network.target postgresql.service redis.service
+
+[Service]
+Type=simple
+User=imfapp
+Group=imfapp
+WorkingDirectory=/var/www/imf-dos
+EnvironmentFile=/var/www/imf-dos/.env.production
+ExecStart=/usr/bin/node /var/www/imf-dos/.next/standalone/server.js
+
+# Process Management & Restart Policy
+Restart=always
+RestartSec=5s
+KillSignal=SIGTERM
+TimeoutStopSec=30s
+
+# Security Sandboxing & Hardening
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Resource Limits
+LimitNOFILE=65535
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target

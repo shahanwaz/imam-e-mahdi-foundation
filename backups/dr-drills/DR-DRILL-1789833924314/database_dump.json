@@ -1,0 +1,77 @@
+{
+  "users": [
+    {
+      "id": "usr_admin",
+      "email": "director@imf.org",
+      "name": "Executive Director",
+      "role": "DIRECTOR"
+    },
+    {
+      "id": "usr_donor",
+      "email": "donor@gmail.com",
+      "name": "Zayed Al-Mansoor",
+      "role": "DONOR"
+    }
+  ],
+  "donations": [
+    {
+      "id": "don_1",
+      "receiptNumber": "IMF-REC-2026-00001",
+      "amount": 50000,
+      "fundType": "ZAKAT_MAL",
+      "currency": "INR"
+    },
+    {
+      "id": "don_2",
+      "receiptNumber": "IMF-REC-2026-00002",
+      "amount": 25000,
+      "fundType": "GENERAL_SADAQAH",
+      "currency": "INR"
+    }
+  ],
+  "journalVouchers": [
+    {
+      "id": "vch_1",
+      "voucherNumber": "JV-2026-0001",
+      "totalAmount": 50000,
+      "entries": [
+        {
+          "id": "e1",
+          "type": "DEBIT",
+          "amount": 50000,
+          "accountCode": "1010-HDFC"
+        },
+        {
+          "id": "e2",
+          "type": "CREDIT",
+          "amount": 50000,
+          "accountCode": "2010-ZAKAT-RESERVE"
+        }
+      ]
+    }
+  ],
+  "beneficiaries": [
+    {
+      "id": "ben_1",
+      "fullName": "Shabana Bano",
+      "vulnerabilityScore": 92,
+      "aidDisbursedINR": 15000
+    }
+  ],
+  "statutoryDocuments": [
+    {
+      "id": "doc_1",
+      "documentCode": "DOC-INC-2024-0001",
+      "title": "Section 8 Certificate of Incorporation",
+      "verificationStatus": "VERIFIED_BY_PROFESSIONAL"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "aud_1",
+      "action": "DONATION_CAPTURED",
+      "entity": "Donation",
+      "timestamp": "2026-09-19T16:05:24.314Z"
+    }
+  ]
+}

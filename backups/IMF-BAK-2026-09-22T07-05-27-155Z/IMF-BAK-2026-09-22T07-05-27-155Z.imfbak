@@ -1,0 +1,19 @@
+{
+  "manifest": {
+    "version": "2.0.0",
+    "backupId": "IMF-BAK-2026-09-22T07-05-27-155Z",
+    "timestamp": "2026-09-22T07:05:27.155Z",
+    "environment": "test",
+    "tables": {
+      "journalVouchers": 1
+    },
+    "totalFiles": 166,
+    "totalSizeBytes": 238,
+    "checksumSha256": "31c73622610d06d78259ad920a443b81d00fccd2e20e8c222fb0f564f11a49ef",
+    "encrypted": true,
+    "algorithm": "aes-256-gcm"
+  },
+  "ivHex": "22b39d7f5f59154ce48195a99daf71b5",
+  "authTagHex": "a847c2a715dccbf5620925c7fbbfff15",
+  "payloadBase64": "sngCXJsoy124QewkxbBS8A6sWiwWZ3DjSywEWU4C3RDjD8xdidiyIZHSOVgpH2PMTIQaGahuh6JPDDC1L/Z/XOIeMvICkuC1Y/DrnvyQTvpgXj1MMFpWAdssTWJAamqz/ulclKVZ7gkb+Ya1V4hbXMhstSsbA806GrD4qOJJHRk8Z0ty2JnPcVdgrVgFSa2C6fz35XoU/1qAzFjDG1ZGV51bKiOi6nI7Khd1PmuU+uhnZ9yMUNxCq5LbEFbvr30gDx2o9jxVjgjeiQoRzK4KhRJiUByUoqjx0U7gkYEEaxrXCj12+EZ1PEve4US++A=="
+}

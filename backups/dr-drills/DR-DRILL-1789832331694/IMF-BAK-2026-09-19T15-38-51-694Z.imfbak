@@ -1,0 +1,24 @@
+{
+  "manifest": {
+    "version": "2.0.0",
+    "backupId": "IMF-BAK-2026-09-19T15-38-51-694Z",
+    "timestamp": "2026-09-19T15:38:51.694Z",
+    "environment": "test",
+    "tables": {
+      "users": 2,
+      "donations": 2,
+      "journalVouchers": 1,
+      "beneficiaries": 1,
+      "statutoryDocuments": 1,
+      "auditLogs": 1
+    },
+    "totalFiles": 130,
+    "totalSizeBytes": 641,
+    "checksumSha256": "f9168dd75e13fb46c52753a1a2aa9287e2b5673f812f613a00bf44fb5c28968f",
+    "encrypted": true,
+    "algorithm": "aes-256-gcm"
+  },
+  "ivHex": "b5d2bcbe9821da2c8cb159c201f82439",
+  "authTagHex": "61ee5f43a093cc00b865b72f7e03ef7b",
+  "payloadBase64": "OhnSvoBPjRrQhb0r0sIpxSzr0ot3g96ewrDFIrggM97v6y+Fc2u7diCU6LD92bv7EDiSBPYi3F9q09mSqL5AnMigt2geMqK1+BFOHgRDuAzzYQWSwwdh8PFB7hqaE0xoV9P+A3J29K8n+WWAi0b3H9Azor9vQi2FHnTP9IeNwiwEG8mfEbtt5zLHZN4HFFDknEg4k1JLxPyb74vkgVqhECdrAZgYRrt/pYUmLEkI6K1e1FigyhpXWqS0EkFS7OoBFvOjJTuN+2rYJKC0J/mFjaYOqH/dEFwyHLT3N4oz5eW05wI0OQVfCEI/Dv73wmzjCcHabdDlR/YonrRQV7lAXwmSgF3ErX2oUlJGgwpDK6+ynHggOkRi4seilX2U9fZUCkkZ9JI2dDXMDMU4JLXOflwsxvOkhYTuwhGJQ9ZzDL9MUWTkc/CeqJugqMzM2v7pspty2sxNK1GrujbPsijJtfuCsRO2DV452hREc+d0kf0pWxKE1n8el7Mz9YJDdvxODFZSJzOQvVMDjQdBd90biNj3/RafaNVDS+XePNMzkUEIzZT3w/HLwjv+NMm1XvWqfn8eb+5Kj9EpiVDK8Vc33GzMt9yH083nm9B85QRTd56OY3KEfQO8t8EYPfyyjrLjAnahX6lluM0/CE6SCwsVie0nzMkSl+Se9YnJXWJFL+xQcsSNzCoVFt2en1dWEhjTDqzRSmn8cuQew4gXz4shbO4O/NNGht8mF61UrNWueti944Rby103/Zpf7nNEWD5hkYg0UsvoihAPON+iMXy15DHYZ59JMhtDFFpYR/6VTJ8KOGtMCezLrV63I7wzJV2I+xw5elh03GaNrIWI9P6GykQ="
+}

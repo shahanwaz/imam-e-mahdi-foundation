@@ -1,0 +1,19 @@
+{
+  "manifest": {
+    "version": "2.0.0",
+    "backupId": "IMF-BAK-2026-09-22T07-04-43-958Z",
+    "timestamp": "2026-09-22T07:04:43.958Z",
+    "environment": "test",
+    "tables": {
+      "testRecords": 1
+    },
+    "totalFiles": 164,
+    "totalSizeBytes": 171,
+    "checksumSha256": "763f0e55c23f3a0ac3a88e0e72775238ddd82c3423c2b73a3a0ce56d8bb5b318",
+    "encrypted": true,
+    "algorithm": "aes-256-gcm"
+  },
+  "ivHex": "1c9572bdb0b87296269c698115542aee",
+  "authTagHex": "24e1d537eb54a4373ab06e38a8d62ff6",
+  "payloadBase64": "jtSMQAf/cAzcAPEBWEvmSSXDau8VeBopCphIpNd6gXzWuKAFctoSfuRRSwpZJdH3hsxay21aOWiIDXcF2W+/gLHu2tWYVmj1aDYB+FQ4Ah1nZcBzcQ2Fy4uUgP2h7gQbJcCmEuv47hd2Hy90uoGf78hnuspGWXtIfzNeTOv77xmJUbMKX14vlUO0clH0KRzIN/N7co2J5q5JRf4NAbSDeimMr9916eUdFllV"
+}

@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary-base: #063B2E;
+  --color-secondary-base: #0B5D46;
+  --color-accent-base: #C9A24A;
+  --color-surface-bg: #FCFBF7;
+  --color-surface-ivory: #F7F5EF;
+  --color-surface-card: #FFFFFF;
+  --color-surface-border: #E5E7E2;
+  --color-text-primary: #17201C;
+  --color-text-secondary: #64706A;
+  --color-soft-green: #EEF5F1;
+}
+
+body {
+  background-color: var(--color-surface-bg);
+  color: var(--color-text-primary);
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Glassmorphism & Elevation Tokens */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(6, 59, 46, 0.08);
+}
+
+.glass-header {
+  background: rgba(252, 251, 247, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(229, 231, 226, 0.8);
+}
+
+.emerald-gradient {
+  background: linear-gradient(135deg, #063B2E 0%, #032119 100%);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #C9A24A 0%, #A87D32 100%);
+}
+
+.gold-glow {
+  box-shadow: 0 0 15px rgba(201, 162, 74, 0.35);
+}
+
+.gold-border-glow {
+  border-color: #C9A24A;
+  box-shadow: 0 0 10px rgba(201, 162, 74, 0.20);
+}
+
+/* Custom Selection */
+::selection {
+  background-color: #EEF5F1;
+  color: #063B2E;
+}
