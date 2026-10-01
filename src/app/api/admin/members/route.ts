@@ -3,7 +3,7 @@ import { MemberService } from '@/lib/members/member-service';
 import { apiSuccess, apiError } from '@/lib/response';
 import { generateHmacSignature } from '@/lib/crypto';
 
-const FALLBACK_MEMBERS = [
+const getFallbackMembers = () => [
   {
     id: 'mem_seed_1',
     membershipNumber: 'IMF-MEM-2026-00015',
@@ -117,6 +117,7 @@ export async function GET(req: NextRequest) {
     }
 
     // In-memory filtered fallback for offline / demo mode
+    const FALLBACK_MEMBERS = getFallbackMembers();
     let filtered = [...FALLBACK_MEMBERS];
     if (search) {
       filtered = filtered.filter(
