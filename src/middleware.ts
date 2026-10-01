@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, getClientIp, RateLimitPresets } from '@/lib/rate-limit';
 
-const CANONICAL_HOST = 'imammission.org';
-
 const SECURITY_HEADERS: Record<string, string> = {
   'X-Frame-Options': 'DENY',
   'X-Content-Type-Options': 'nosniff',
@@ -15,17 +13,8 @@ const SECURITY_HEADERS: Record<string, string> = {
 };
 
 export function middleware(req: NextRequest) {
-  const host = req.headers.get('host') || '';
-  const proto = req.headers.get('x-forwarded-proto') || req.nextUrl.protocol.replace(':', '');
-  const isProd = process.env.NODE_ENV === 'production';
-
-  // 1. Canonical Domain & HTTPS Redirection Strategy (www -> non-www, http -> https)
-  if (isProd && (host.startsWith('www.') || (proto === 'http' && !host.includes('localhost')))) {
-    const cleanHost = host.replace(/^www\./, '');
-    const canonicalUrl = new URL(req.nextUrl.pathname + req.nextUrl.search, `https://${cleanHost || CANONICAL_HOST}`);
-    return NextResponse.redirect(canonicalUrl, 301);
-  }
-
+  // Canonical domain (www vs apex) and HTTPS redirects are handled by Vercel's
+  // domain settings. Redirecting here too caused an infinite redirect loop.
   const { pathname } = req.nextUrl;
   const ip = getClientIp(req);
 
