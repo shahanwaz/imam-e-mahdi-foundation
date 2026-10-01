@@ -3,7 +3,7 @@ import { VolunteerService } from '@/lib/volunteers/volunteer-service';
 import { apiSuccess, apiError } from '@/lib/response';
 import { generateHmacSignature } from '@/lib/crypto';
 
-const FALLBACK_VOLUNTEERS = [
+const getFallbackVolunteers = () => [
   {
     id: 'vol_seed_1',
     volunteerNumber: 'IMF-VOL-2026-00028',
@@ -150,6 +150,7 @@ export async function GET(req: NextRequest) {
       // Fallback below
     }
 
+    const FALLBACK_VOLUNTEERS = getFallbackVolunteers();
     let filtered = [...FALLBACK_VOLUNTEERS];
     if (search) {
       filtered = filtered.filter(
